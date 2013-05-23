@@ -1,0 +1,19 @@
+{
+  "name": "picl-third-party",
+  "fullName": "picl-third-party",
+  "id": "jid1-AuACBrRZEog8vw",
+  "description": "a picl third party experiment",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vladikoff/picl-third-party.git"
+  },
+  "author": "",
+  "license": "MPL 2.0",
+  "version": "0.1.0",
+  "dependencies": "menuitems",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.3",
+    "grunt-shell": "~0.2.2"
+  }
+}
