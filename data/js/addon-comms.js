@@ -4,15 +4,10 @@ self.port.on("to-content", function(data) {
     // passing {foo:["a"]} into the CustomEvent's .detail causes
     // {foo:{"0":"a"}} to appear in the content's
     // event-listener's e.detail. So stringify it first.
-    var ce = new CustomEvent("to-content", {detail: JSON.stringify(data)});
-    window.dispatchEvent(ce);
+    window.dispatchEvent(new CustomEvent("to-content", {detail: JSON.stringify(data)}));
 
-    // TODO: move this
-    if (data.name == "dropboxConnect") {
-        window.open(data.path);
-    }
 });
 
 window.addEventListener("from-content", function(e) {
-        self.port.emit("from-content", e.detail);
+    self.port.emit("from-content", e.detail);
 });

@@ -1,5 +1,4 @@
 //TODO: change the name of this file and Auth
-//const tabs = require("tabs");
 
 function SyncFlow() {
 
@@ -8,8 +7,10 @@ function SyncFlow() {
 // TODO: reads the dropbox folder to test the sdk
 SyncFlow.prototype.readFolder = function() {
     this.client.readdir("/", function(error, files) {
-        console.log('folder');
-        console.log(files);
+        $("#dropboxData").html("");
+        files.forEach(function(file) {
+            $("#dropboxData").append(file + "<br/>");
+        });
     });
 };
 
@@ -20,9 +21,8 @@ SyncFlow.prototype.authDropbox = function() {
         key: "gBZIklF5PfA=|f3fms27tm69IELcc347Wmtex0IZ8k+n2y8Sy21+6Hg==", sandbox: true
     });
 
-    this.client.authDriver(new Dropbox.Drivers.Firefox({
-        receiverUrl: "http://dropbox.com/home"
-    }));
+    this.driver = new Dropbox.Drivers.Firefox();
+    this.client.authDriver(this.driver);
 
     this.client.authenticate(function(error, client) {
         if (error) {
@@ -40,10 +40,8 @@ SyncFlow.prototype.authDropbox = function() {
             self.readFolder();
             // The image has been succesfully written.
         });
-        self.readFolder();
     });
 };
-
 
 SyncFlow.prototype.authGoogleDrive = function() {
     console.log("authGoogleDrive");
