@@ -5,10 +5,8 @@ self.port.on("to-content", function(data) {
     // {foo:{"0":"a"}} to appear in the content's
     // event-listener's e.detail. So stringify it first.
     window.dispatchEvent(new CustomEvent("to-content", {detail: JSON.stringify(data)}));
-
 });
 
 window.addEventListener("from-content", function(e) {
     self.port.emit("from-content", e.detail);
 });
-

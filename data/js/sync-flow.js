@@ -10,17 +10,6 @@ var readFolder = function (client) {
     });
 };
 
-var readTabs = function (client) {
-    /*
-    client.readdir("/", function (error, files) {
-        $("#dropboxData").html("");
-        files.forEach(function (file) {
-            $("#dropboxData").append(file + "<br/>");
-        });
-    });
-    */
-
-};
 
 function SyncFlow() {
     this.client = new Dropbox.Client({
@@ -41,6 +30,10 @@ function SyncFlow() {
         }
     });
 }
+
+SyncFlow.prototype.signOut = function () {
+    this.client.signOut();
+};
 
 
 // dropbox auth

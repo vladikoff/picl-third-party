@@ -1966,6 +1966,86 @@
 
   })(Dropbox.Drivers.BrowserBase);
 
+  Dropbox.Drivers.Firefox = (function(_super) {
+    __extends(Firefox, _super);
+
+    function Firefox(options) {
+      var _ref;
+
+      options.receiverUrl = "https://dropbox.com/home";
+      Firefox.__super__.constructor.call(this, options);
+      _ref = this.computeUrl(options.receiverUrl), this.receiverUrl1 = _ref[0], this.receiverUrl2 = _ref[1];
+    }
+
+    Firefox.prototype.onAuthStateChange = function(client, callback) {
+      var superCall,
+        _this = this;
+
+      superCall = (function() {
+        return function() {
+          return Firefox.__super__.onAuthStateChange.call(_this, client, callback);
+        };
+      })();
+      this.setStorageKey(client);
+      if (client.authState === DropboxClient.RESET) {
+        return this.loadCredentials(function(credentials) {
+          if (credentials && credentials.authState) {
+            return _this.forgetCredentials(superCall);
+          }
+          return superCall();
+        });
+      } else {
+        return superCall();
+      }
+    };
+
+    Firefox.prototype.doAuthorize = function(authUrl, token, tokenSecret, callback) {
+      self.port.emit("doAuthorize", {
+        authUrl: authUrl
+      });
+      self.port.on("doAuthorize", function(data) {
+        return Dropbox.Drivers.Firefox.oauthReceiver(data.path);
+      });
+      return this.listenForMessage(token, callback);
+    };
+
+    Firefox.prototype.url = function(token) {
+      return this.receiverUrl1 + encodeURIComponent(token) + this.receiverUrl2;
+    };
+
+    Firefox.prototype.listenForMessage = function(token, callback) {
+      var listener,
+        _this = this;
+
+      listener = function(event) {
+        var data;
+
+        if (event.data) {
+          data = event.data;
+        } else {
+          data = event;
+        }
+        if (_this.locationToken(data) === token) {
+          token = null;
+          window.removeEventListener('message', listener);
+          Dropbox.Drivers.Firefox.onMessage.removeListener(listener);
+          return callback();
+        }
+      };
+      window.addEventListener('message', listener, false);
+      return Dropbox.Drivers.Firefox.onMessage.addListener(listener);
+    };
+
+    Firefox.oauthReceiver = function(path) {
+      return this.onMessage.dispatch(path);
+    };
+
+    Firefox.onMessage = new Dropbox.EventSource;
+
+    return Firefox;
+
+  })(Dropbox.Drivers.BrowserBase);
+
   Dropbox.Drivers.NodeServer = (function() {
     function NodeServer(options) {
       this.port = (options != null ? options.port : void 0) || 8912;
@@ -2069,90 +2149,7 @@
 
   })();
 
-    Dropbox.Drivers.Firefox = (function(_super) {
-
-        __extends(Firefox, _super);
-
-        function Firefox(options) {
-            var _ref;
-
-            var options = options || {};
-            options.receiverUrl = "http://dropbox.com/home";
-
-            Firefox.__super__.constructor.call(this, options);
-
-            _ref = this.computeUrl(options.receiverUrl), this.receiverUrl1 = _ref[0], this.receiverUrl2 = _ref[1];
-        }
-
-        Firefox.prototype.onAuthStateChange = function(client, callback) {
-            var superCall,
-                _this = this;
-            superCall = (function() {
-                return function() {
-                    return Firefox.__super__.onAuthStateChange.call(_this, client, callback);
-                };
-            })();
-            this.setStorageKey(client);
-            if (client.authState === DropboxClient.RESET) {
-                return this.loadCredentials(function(credentials) {
-                    if (credentials && credentials.authState) {
-                        return _this.forgetCredentials(superCall);
-                    }
-                    return superCall();
-                });
-            } else {
-                return superCall();
-            }
-        };
-
-        Firefox.prototype.doAuthorize = function(authUrl, token, tokenSecret, callback) {
-
-            window.dispatchEvent(
-                new CustomEvent("from-content", {detail: { authUrl: authUrl, name: "authTab" }})
-            );
-            this.listenForMessage(token, callback);
-            return this;
-        };
-
-        Firefox.prototype.url = function(token) {
-            return this.receiverUrl1 + encodeURIComponent(token) + this.receiverUrl2;
-        };
-
-        Firefox.prototype.listenForMessage = function(token, callback) {
-            var listener,
-                _this = this;
-            listener = function(event) {
-                var data;
-                if (event.data) {
-                    data = event.data;
-                } else {
-                    data = event;
-                }
-                if (_this.locationToken(data) === token) {
-                    token = null;
-                    window.removeEventListener('message', listener);
-                    Dropbox.Drivers.Firefox.onMessage.removeListener(listener);
-                    return callback();
-                }
-            };
-
-            window.addEventListener('message', listener, false);
-            return Dropbox.Drivers.Firefox.onMessage.addListener(listener);
-        };
-
-        Firefox.oauthReceiver = function(path) {
-            return this.onMessage.dispatch(path);
-        };
-
-        Firefox.onMessage = new Dropbox.EventSource;
-
-        return Firefox;
-
-    })(Dropbox.Drivers.BrowserBase);
-
-
-
-    base64HmacSha1 = function(string, key) {
+  base64HmacSha1 = function(string, key) {
     return arrayToBase64(hmacSha1(stringToArray(string), stringToArray(key), string.length, key.length));
   };
 
