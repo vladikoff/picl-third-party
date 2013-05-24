@@ -11,3 +11,4 @@ self.port.on("to-content", function(data) {
 window.addEventListener("from-content", function(e) {
     self.port.emit("from-content", e.detail);
 });
+

@@ -15,4 +15,4 @@ This allows for faster cfx reload.
 * npm install
 * grunt watch
 * after you make changes to the project files, cfx will run.
-* note: you need to close cfx first, before it can relaunch
+* note: you need to close Firefox first, before cfx can relaunch the browser

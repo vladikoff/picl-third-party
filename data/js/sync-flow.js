@@ -1,48 +1,91 @@
 //TODO: change the name of this file and Auth
 
-function SyncFlow() {
-
-}
-
 // TODO: reads the dropbox folder to test the sdk
-SyncFlow.prototype.readFolder = function() {
-    this.client.readdir("/", function(error, files) {
+var readFolder = function (client) {
+    client.readdir("/", function (error, files) {
         $("#dropboxData").html("");
-        files.forEach(function(file) {
+        files.forEach(function (file) {
             $("#dropboxData").append(file + "<br/>");
         });
     });
 };
 
-// dropbox auth
-SyncFlow.prototype.authDropbox = function() {
-    var self = this;
+var readTabs = function (client) {
+    /*
+    client.readdir("/", function (error, files) {
+        $("#dropboxData").html("");
+        files.forEach(function (file) {
+            $("#dropboxData").append(file + "<br/>");
+        });
+    });
+    */
+
+};
+
+function SyncFlow() {
     this.client = new Dropbox.Client({
         key: "gBZIklF5PfA=|f3fms27tm69IELcc347Wmtex0IZ8k+n2y8Sy21+6Hg==", sandbox: true
     });
 
-    this.driver = new Dropbox.Drivers.Firefox();
-    this.client.authDriver(this.driver);
+    this.client.authDriver(new Dropbox.Drivers.Firefox({ rememberUser: true }));
 
-    this.client.authenticate(function(error, client) {
+    this.client.authenticate({interactive: false}, function (error, client) {
+        if (error) {
+            console.log(error);
+        }
+        console.log(client.isAuthenticated());
+        if (client.isAuthenticated()) {
+            // Cached credentials are available, make Dropbox API calls.
+            //readFolder(client);
+            window.dispatchEvent(new CustomEvent("from-content", {detail: { name: "getTabs" }}));
+        }
+    });
+}
+
+
+// dropbox auth
+SyncFlow.prototype.authDropbox = function () {
+    this.client.authenticate(function (error, client) {
         if (error) {
             console.log(error);
             return;
         }
 
-        client.getUserInfo(function(error, userInfo) {
+        client.getUserInfo(function (error, userInfo) {
             console.log("Hello, " + userInfo.name + "!");
         });
-        client.writeFile(new Date().toString().replace(/ /g, '') + ".txt", 'Hello!', function(error, stat) {
-            if (error) {
-                console.log(error);
-            }
-            self.readFolder();
-            // The image has been succesfully written.
-        });
+
+        window.dispatchEvent(new CustomEvent("from-content", {detail: { name: "getTabs" }}));
     });
 };
 
-SyncFlow.prototype.authGoogleDrive = function() {
+// load the tabs into the ui
+SyncFlow.prototype.loadTabs = function (tabs) {
+    var self = this;
+    console.log('tabs');
+    console.log(tabs);
+
+
+    $("#dropboxData").html("");
+
+    this.client.readdir("/", function (error, files) {
+        files.forEach(function (file) {
+            $("#dropboxData").append(file + "<br/>");
+        });
+    });
+
+    tabs.forEach(function (tab) {
+        $("#dropboxData").append("<a href='" + tab.url + ">" + tab.title + "</a><br/>");
+        self.client.readFile(tab.title + ".html", function(error, data) {
+            if (error) {
+                self.client.writeFile(tab.title + ".html", tab.url, function(error, stat) {});
+            }
+        });
+
+    });
+
+};
+
+SyncFlow.prototype.authGoogleDrive = function () {
     console.log("authGoogleDrive");
 };

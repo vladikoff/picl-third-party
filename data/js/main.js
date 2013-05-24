@@ -1,11 +1,15 @@
 
     var sync = new SyncFlow();
-    $("#syncDropbox").one("click", sync.authDropbox.bind(sync));
+    $("#syncDropbox").on("click", sync.authDropbox.bind(sync));
 
     function msgFromBackend(name, data) {
         if (name == "dropboxConnect") {
             Dropbox.Drivers.Firefox.oauthReceiver(data.path);
         }
+        if (name == "syncTabs") {
+            sync.loadTabs(data.tabs);
+        }
+
     }
 
     function syncListener(e) {
