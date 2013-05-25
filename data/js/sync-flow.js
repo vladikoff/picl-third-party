@@ -1,16 +1,3 @@
-//TODO: change the name of this file and Auth
-
-// TODO: reads the dropbox folder to test the sdk
-var readFolder = function (client) {
-    client.readdir("/", function (error, files) {
-        $("#dropboxData").html("");
-        files.forEach(function (file) {
-            $("#dropboxData").append(file + "<br/>");
-        });
-    });
-};
-
-
 function SyncFlow() {
     this.client = new Dropbox.Client({
         key: "gBZIklF5PfA=|f3fms27tm69IELcc347Wmtex0IZ8k+n2y8Sy21+6Hg==", sandbox: true
