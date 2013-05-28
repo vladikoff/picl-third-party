@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         // watches files for changes, runs a task if there's a change
         watch: {
             data: {
-                files: ["data/**/*", "lib/*"],
+                files: ["data/**/*", "lib/*", "packages/**/*"],
                 tasks: ["default"]
             }
         }

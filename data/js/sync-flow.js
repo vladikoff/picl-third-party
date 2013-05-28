@@ -18,6 +18,7 @@ function SyncFlow() {
     });
 }
 
+
 SyncFlow.prototype.signOut = function () {
     this.client.signOut();
 };

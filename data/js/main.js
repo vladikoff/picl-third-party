@@ -1,4 +1,3 @@
-
     var sync = new SyncFlow();
     $("#loginDropbox").on("click", sync.authDropbox.bind(sync));
     $("#logoutDropbox").on("click", sync.signOut.bind(sync));
@@ -22,4 +21,3 @@
         }
     }
     window.addEventListener("to-content", syncListener);
-
