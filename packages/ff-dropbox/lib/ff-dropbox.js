@@ -18,15 +18,16 @@ var listener = function (event) {
     var channel = event.subject.QueryInterface(Ci.nsIHttpChannel);
     // find the http event url
     var url = channel.URI.spec;
-    console.log('1');
-    console.log(url);
+    //console.log(url);
     // match it with the api auth
-    if (url.indexOf('https://www.dropbox.com/home#?') == 0) {
+    if (url.indexOf('http://localhost/#?') == 0) {
+    //if (url.indexOf('https://www.dropbox.com/1/oauth/authorize?') == 0) {
         // splits to get the tokens
         var path = "oauth_receiver.html#?" + url.split("#?")[1];
         // send to the client add-on
         workerV.port.emit("doAuthorize", { path: path });
-        tabV.close();
+        //tabV.close();
+
         // unsubscribe
         //events.off("http-on-modify-request", listener);
         //events.off("http-on-opening-request", listener);
@@ -44,11 +45,22 @@ let FFDropbox = Class({
                     tabV = tab;
                     /*
                     events.on("http-on-modify-request", function (event) {
-                        //self.listener(event, tab, worker);
-                        listener(event, tab, worker);
+                        self.listener(event, tab, worker);
+                        //listener(event, tab, worker);
                     });
-                    */
-                    events.on("http-on-modify-request", listener);
+                      */
+                    //events.on("http-on-modify-request", listener);
+                },
+                onReady: function onReady(tab) {
+                    if (tab.title.indexOf('about:blank#?') == 0) {
+                        //if (url.indexOf('https://www.dropbox.com/1/oauth/authorize?') == 0) {
+                        // splits to get the tokens
+                        var path = "oauth_receiver.html#?" + tab.title.split("#?")[1];
+                        // send to the client add-on
+                        worker.port.emit("doAuthorize", { path: path });
+                        tab.close();
+                    }
+
                 }
             });
         });
@@ -59,15 +71,13 @@ let FFDropbox = Class({
         var channel = event.subject.QueryInterface(Ci.nsIHttpChannel);
         // find the http event url
         var url = channel.URI.spec;
-        console.log(url);
         // match it with the api auth
-        if (url.indexOf('https://www.dropbox.com/home#?') == 0) {
+        if (url.indexOf('about:blank#?') == 0) {
             // splits to get the tokens
             var path = "oauth_receiver.html#?" + url.split("#?")[1];
             // send to the client add-on
             worker.port.emit("doAuthorize", { path: path });
             tab.close();
-
             // unsubscribe
             //events.off("http-on-modify-request", listener);
             //events.off("http-on-opening-request", listener);

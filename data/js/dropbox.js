@@ -1971,8 +1971,8 @@
 
     function Firefox(options) {
       var _ref;
-
-      options.receiverUrl = "https://dropbox.com/home";
+      //options.receiverUrl = "https://dropbox.com/home";
+      options.receiverUrl = "about:blank";
       Firefox.__super__.constructor.call(this, options);
       _ref = this.computeUrl(options.receiverUrl), this.receiverUrl1 = _ref[0], this.receiverUrl2 = _ref[1];
     }

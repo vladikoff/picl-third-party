@@ -4,20 +4,24 @@ function SyncFlow() {
     });
 
     this.client.authDriver(new Dropbox.Drivers.Firefox({ rememberUser: true }));
+    /*
+    this.client.authDriver(new Dropbox.Drivers.Popup({
+
+        rememberUser: true,
+        receiverUrl: "about:dropbox"
+    }));
+    */
 
     this.client.authenticate({interactive: false}, function (error, client) {
         if (error) {
             console.log(error);
         }
-        console.log(client.isAuthenticated());
         if (client.isAuthenticated()) {
             // Cached credentials are available, make Dropbox API calls.
-            //readFolder(client);
             window.dispatchEvent(new CustomEvent("from-content", {detail: { name: "getTabs" }}));
         }
     });
 }
-
 
 SyncFlow.prototype.signOut = function () {
     this.client.signOut();
