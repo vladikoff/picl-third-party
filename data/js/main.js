@@ -6,7 +6,6 @@
         if (name == "syncTabs") {
             sync.loadTabs(data.tabs);
         }
-
     }
 
     function syncListener(e) {

@@ -4,13 +4,6 @@ function SyncFlow() {
     });
 
     this.client.authDriver(new Dropbox.Drivers.Firefox({ rememberUser: true }));
-    /*
-    this.client.authDriver(new Dropbox.Drivers.Popup({
-
-        rememberUser: true,
-        receiverUrl: "about:dropbox"
-    }));
-    */
 
     this.client.authenticate({interactive: false}, function (error, client) {
         if (error) {
