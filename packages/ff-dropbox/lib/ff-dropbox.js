@@ -4,9 +4,7 @@
 "use strict";
 
 const { Class } = require("sdk/core/heritage");
-const { Ci } = require("chrome");
 const tabs = require("tabs");
-const events = require("sdk/system/events");
 const data = require("self").data;
 
 let FFDropbox = Class({
