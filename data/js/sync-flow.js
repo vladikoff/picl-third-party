@@ -2,9 +2,7 @@ function SyncFlow() {
     this.client = new Dropbox.Client({
         key: "gBZIklF5PfA=|f3fms27tm69IELcc347Wmtex0IZ8k+n2y8Sy21+6Hg==", sandbox: true
     });
-
     this.client.authDriver(new Dropbox.Drivers.Firefox({ rememberUser: true }));
-
     this.client.authenticate({interactive: false}, function (error, client) {
         if (error) {
             console.log(error);
@@ -19,7 +17,6 @@ function SyncFlow() {
 SyncFlow.prototype.signOut = function () {
     this.client.signOut();
 };
-
 
 // dropbox auth
 SyncFlow.prototype.authDropbox = function () {
