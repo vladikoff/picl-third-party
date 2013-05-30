@@ -11,8 +11,7 @@
   "license": "MPL 2.0",
   "version": "0.1.0",
   "dependencies": [
-     "menuitems",
-     "ff-dropbox"
+     "menuitems"
   ],
   "devDependencies": {
     "grunt": "~0.4.1",
