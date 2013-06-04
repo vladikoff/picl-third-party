@@ -15,19 +15,19 @@ module.exports = function(grunt) {
 
     // Load Tasks
     grunt.loadNpmTasks("grunt-contrib-watch");
-
     // temporary task to run cfx
     var spawn = require("child_process").spawn;
-    grunt.registerTask('cfx', 'Runs a server for devtools', function () {
+    grunt.registerTask("cfx", "Runs a server for devtools", function () {
         this.async();
-        var child = spawn('cfx', ['run']);
-        child.stderr.on('data', function (data) {
+        // create a temporary profile
+        var child = spawn("cfx", ["run", "--profiledir", "tmp/addon-dev/profiles/profile8" ]);
+        child.stderr.on("data", function (data) {
             if (data) {
                 grunt.log.write(data.toString());
             }
         });
 
-        child.stdout.on('data', function (data) {
+        child.stdout.on("data", function (data) {
             if (data) {
                 grunt.log.write(data.toString());
             }
