@@ -20,7 +20,7 @@ module.exports = function(grunt) {
     grunt.registerTask("cfx", "Runs a server for devtools", function () {
         this.async();
         // create a temporary profile
-        var child = spawn("cfx", ["run", "--profiledir", "tmp/addon-dev/profiles/profile8" ]);
+        var child = spawn("cfx", ["run", "-b", "/Applications/FirefoxNightly.app", "--profiledir", "tmp/addon-dev/profiles/profile8" ]);
         child.stderr.on("data", function (data) {
             if (data) {
                 grunt.log.write(data.toString());
