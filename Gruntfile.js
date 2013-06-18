@@ -20,7 +20,13 @@ module.exports = function(grunt) {
     grunt.registerTask("cfx", "Runs a server for devtools", function () {
         this.async();
         // create a temporary profile
-        var child = spawn("cfx", ["run", "--profiledir", "tmp/addon-dev/profiles/profile8" ]);
+
+        var cmd = ["run", "--profiledir", "tmp/addon-dev/profiles/profile8" ];
+        if (grunt.option('mobile')) {
+          cmd = "run -a fennec-on-device -b adb --mobile-app firefox_beta --force-mobile".split(' ');
+        }
+
+        var child = spawn("cfx", cmd);
         child.stderr.on("data", function (data) {
             if (data) {
                 grunt.log.write(data.toString());
