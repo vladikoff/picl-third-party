@@ -15,6 +15,7 @@ module.exports = function(grunt) {
 
     // Load Tasks
     grunt.loadNpmTasks("grunt-contrib-watch");
+
     // temporary task to run cfx
     var spawn = require("child_process").spawn;
     grunt.registerTask("cfx", "Runs a server for devtools", function () {
