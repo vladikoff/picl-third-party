@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         // watches files for changes, runs a task if there's a change
         watch: {
             data: {
-                files: ["data/**/*", "lib/*", "packages/**/*"],
+                files: ["data/**/*", "lib/**/*", "packages/**/*"],
                 tasks: ["default"]
             }
         }
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         this.async();
         // create a temporary profile
 
-        var cmd = ["run", "--profiledir", "tmp/addon-dev/profiles/profile8" ];
+        var cmd = ["run", "--profiledir", "tmp/addon-dev/profiles/profile9" ];
         if (grunt.option('mobile')) {
           cmd = "run -a fennec-on-device -b adb --mobile-app firefox_beta --force-mobile".split(' ');
         }
