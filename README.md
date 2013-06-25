@@ -3,7 +3,10 @@
 
 ## Development
 
-* enable (addon-sdk-1.14 or later) sdk, use `source bin/activate`
+* Sending files to third party storage requires ArrayBuffers, XHR and FormData.
+Please download the latest copy of the [Addon SDK](https://github.com/mozilla/addon-sdk) or use one that this was tested with at [https://github.com/vladikoff/addon-sdk](https://github.com/vladikoff/addon-sdk)
+(Addon SDK 1.14 does NOT have proper XHR support for this).
+* enable addon-sdk sdk, use `source bin/activate`
 * `cfx run` from project directory
 * see Tools -> Sync with ...
 
@@ -23,7 +26,7 @@ Log: `adb logcat | grep info:`
 This allows for faster cfx reload.
 
 * npm install
-* grunt watch
+* run `grunt watch` (make sure cfx is loaded)
 * after you make changes to the project files, cfx will run.
 * note: you need to close Firefox first, before cfx can relaunch the browser
 
