@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         this.async();
         // create a temporary profile
 
-        var cmd = ["run", "--profiledir", "tmp/addon-dev/profiles/profile10" ];
+        var cmd = ["run", "--profiledir", "tmp/addon-dev/profiles/profile11" ];
         if (grunt.option('mobile')) {
           cmd = "run -a fennec-on-device -b adb --mobile-app firefox_beta --force-mobile".split(' ');
         }
